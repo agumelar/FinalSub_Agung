@@ -20,7 +20,6 @@ const createServer = async (injections) => {
       options: { injections },
     },
   ]);
-
   server.route({
     method: 'GET',
     path: '/',
