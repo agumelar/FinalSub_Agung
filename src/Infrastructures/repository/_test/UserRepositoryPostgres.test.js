@@ -39,6 +39,21 @@ describe('UserRepositoryPostgres', () => {
         // Action & Assert
         await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrowError(InvariantError);
       });
+
+      it('should throw InvariantError when username not available', async () => {
+        // Arrange
+        await UsersTableTestHelper.addUser({ username: 'dicoding' });
+        const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+        // Logging
+        console.log('Before verifyAvailableUsername');
+
+        // Action & Assert
+        await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrowError(InvariantError);
+
+        // Logging
+        console.log('After verifyAvailableUsername');
+      });
     });
 
     describe('addUser function', () => {
@@ -66,7 +81,7 @@ describe('UserRepositoryPostgres', () => {
       });
     });
 
-    describe('getPasswordByUsername', () => {
+    describe('getPasswordByUsername function', () => {
       it('should throw InvariantError when user not found', () => {
         // Arrange
         const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});

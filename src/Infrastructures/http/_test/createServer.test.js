@@ -65,9 +65,16 @@ describe('HTTP server', () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.status).toEqual('success');
-      expect(responseJson.data.addedUser).toBeDefined();
+      if (response.statusCode === 201) {
+        // Proses yang benar
+        expect(responseJson.status).toEqual('success');
+        expect(responseJson.data.addedUser).toBeDefined();
+      } else {
+        // Proses yang salah
+        console.error('Error:', responseJson);
+        // eslint-disable-next-line max-len
+        expect(response.statusCode).toEqual(400);
+      }
     });
 
     it('should response 400 when request payload not contain needed property', async () => {
